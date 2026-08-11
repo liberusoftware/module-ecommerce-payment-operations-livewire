@@ -18,24 +18,32 @@ use Livewire\Livewire;
  * The pay component is not: a guest pays. Its tests never sign anybody in, and
  * that is the composition a storefront is actually in.
  */
-uses(PackageTestCase::class, UsesTestUser::class)->in(__DIR__);
+/*
+ * The setup hangs off `uses()->beforeEach()` rather than a bare `beforeEach()`.
+ * `Pest.php` is a bootstrap file with no tests in it, so a top-level
+ * `beforeEach()` here binds to nothing and runs never — which looks exactly like
+ * a package that is simply unconfigured, and is the shape of a first CI run that
+ * failed 51 tests with "this shop cannot take payments yet".
+ */
+uses(PackageTestCase::class, UsesTestUser::class)
+    ->beforeEach(function (): void {
+        PayableStub::$prices = [];
 
-beforeEach(function (): void {
-    PayableStub::$prices = [];
+        config()->set('payment-operations-livewire.payable', PayableStub::class);
+        config()->set('payment-operations-livewire.capture', false);
+        config()->set('payment-operations-livewire.slots.instrument', null);
+        config()->set('payment-operations-livewire.viewer', null);
 
-    config()->set('payment-operations-livewire.payable', PayableStub::class);
-    config()->set('payment-operations-livewire.capture', false);
-    config()->set('payment-operations-livewire.slots.instrument', null);
-    config()->set('payment-operations-livewire.viewer', null);
-
-    // A real, complete gateway with a real HMAC signature check, shipped by the
-    // domain package for exactly this. The suite tests against the contract
-    // rather than against a mock of it, and no provider is named anywhere.
-    config()->set('payment-operations.gateways.card', [
-        'class' => FakeGateway::class,
-        'signing_secret' => 'a-secret-that-is-not-in-a-column',
-    ]);
-});
+        // A real, complete gateway with a real HMAC signature check, shipped by
+        // the domain package for exactly this. The suite tests against the
+        // contract rather than against a mock of it, and no provider is named
+        // anywhere.
+        config()->set('payment-operations.gateways.card', [
+            'class' => FakeGateway::class,
+            'signing_secret' => 'a-secret-that-is-not-in-a-column',
+        ]);
+    })
+    ->in(__DIR__);
 
 /**
  * A reference the host prices at something, and the amount it is worth.

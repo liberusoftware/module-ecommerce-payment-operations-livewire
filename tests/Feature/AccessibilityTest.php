@@ -19,7 +19,11 @@ it('gives every field it renders a label of its own', function () {
     // Vacuous today, deliberately: there is no field on any of these components,
     // because there is nothing on a payment surface a shopper types that this
     // package may receive. It starts meaning something the moment that changes.
-    expectEveryFieldToBeLabelled(payFor(priced())->html());
+    $html = payFor(priced())->html();
+
+    expect($html)->not->toBeEmpty();
+
+    expectEveryFieldToBeLabelled($html);
 });
 
 it('puts the loading state inside a live region rather than beside it', function () {

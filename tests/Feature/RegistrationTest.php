@@ -17,7 +17,7 @@ it('publishes exactly three components, and their names are the interface', func
     // to be on disk, so moving a class or adding one would silently change a
     // public interface; this list *is* the interface, and changing it is a diff
     // somebody reviews.
-    expect(app(Provider::class)->aliases())->toBe([
+    expect(app()->getProvider(Provider::class)?->aliases())->toBe([
         'module-ecommerce-payment-operations::pay' => PayForOrder::class,
         'module-ecommerce-payment-operations::receipt' => PaymentReceipt::class,
         'module-ecommerce-payment-operations::instruments' => SavedInstruments::class,

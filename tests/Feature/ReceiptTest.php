@@ -8,6 +8,7 @@ use Liberu\Ecommerce\PaymentOperations\Enums\EntryKind;
 use Liberu\Ecommerce\PaymentOperations\Livewire\Components\PaymentReceipt;
 use Liberu\Ecommerce\PaymentOperations\Models\Payment;
 use Liberu\Ecommerce\PaymentOperations\Models\PaymentEntry;
+use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -24,7 +25,7 @@ function ownPayment(int $minor = 4798): string
     return payFor()->call('pay')->get('paymentReference');
 }
 
-function receipt(string $reference): Livewire\Features\SupportTesting\Testable
+function receipt(string $reference): Testable
 {
     return Livewire::test(PaymentReceipt::class, ['reference' => $reference]);
 }

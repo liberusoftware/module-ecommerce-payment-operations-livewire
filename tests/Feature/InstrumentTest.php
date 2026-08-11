@@ -3,13 +3,14 @@
 use Liberu\Ecommerce\PaymentOperations\Livewire\Components\SavedInstruments;
 use Liberu\Ecommerce\PaymentOperations\Livewire\Tests\Fixtures\ViewerWithAUlid;
 use Liberu\Ecommerce\PaymentOperations\Models\PaymentInstrument;
+use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 
 /*
  * Saved payment methods: list, remove, and nowhere to add one.
  */
 
-function instruments(): Livewire\Features\SupportTesting\Testable
+function instruments(): Testable
 {
     return Livewire::test(SavedInstruments::class);
 }
