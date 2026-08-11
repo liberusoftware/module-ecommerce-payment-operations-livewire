@@ -10,7 +10,6 @@ use Liberu\Ecommerce\PaymentOperations\Models\Payment;
 use Liberu\Ecommerce\PaymentOperations\Models\PaymentEntry;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
  * A payment as the person who made it sees it: folded from the ledger, every
@@ -48,13 +47,13 @@ it('404s on somebody else\'s payment', function () {
     // exists but is not theirs is telling them a reference exists.
     asCustomer();
 
-    expect(fn () => receipt($theirs))->toThrow(NotFoundHttpException::class);
+    receipt($theirs)->assertStatus(404);
 });
 
 it('404s on a reference that names nothing', function () {
     asCustomer();
 
-    expect(fn () => receipt('PAY-NOT-A-REAL-ONE'))->toThrow(NotFoundHttpException::class);
+    receipt('PAY-NOT-A-REAL-ONE')->assertStatus(404);
 });
 
 it('404s on a guest payment for everybody, including the guest', function () {
@@ -65,11 +64,11 @@ it('404s on a guest payment for everybody, including the guest', function () {
     // that made it and nowhere else.
     $guestPayment = payFor(priced())->call('pay')->get('paymentReference');
 
-    expect(fn () => receipt($guestPayment))->toThrow(NotFoundHttpException::class);
+    receipt($guestPayment)->assertStatus(404);
 
     asCustomer();
 
-    expect(fn () => receipt($guestPayment))->toThrow(NotFoundHttpException::class);
+    receipt($guestPayment)->assertStatus(404);
 });
 
 it('shows nobody anything when the viewer cannot be identified as a number', function () {
@@ -82,7 +81,7 @@ it('shows nobody anything when the viewer cannot be identified as a number', fun
     // which is worth knowing about when every list is empty.
     config()->set('payment-operations-livewire.viewer', ViewerWithAUlid::class);
 
-    expect(fn () => receipt($mine))->toThrow(NotFoundHttpException::class);
+    receipt($mine)->assertStatus(404);
 });
 
 it('folds the current state rather than reading a status somebody wrote', function () {

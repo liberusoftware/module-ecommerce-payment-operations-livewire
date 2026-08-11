@@ -10,7 +10,6 @@ use Liberu\Ecommerce\PaymentOperations\Models\PaymentEntry;
 use Liberu\Ecommerce\PaymentOperations\Models\PaymentInstrument;
 use Liberu\Ecommerce\PaymentOperations\Queries\PaymentQuery;
 use Livewire\Livewire;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
  * What the button does, and where each number in it came from.
@@ -121,8 +120,9 @@ it('stores the descriptor the gateway returned and nothing the shopper sent', fu
 it('404s on a reference the host prices at nothing', function () {
     // Answered exactly as a reference that was never issued. The difference
     // between the two is information about somebody else's order.
-    expect(fn () => payFor('ORD-NEVER-ISSUED'))
-        ->toThrow(NotFoundHttpException::class);
+    // `assertStatus` rather than `toThrow`: Livewire catches an `abort()` during
+    // mount and records it as a response, which is what a browser would get.
+    payFor('ORD-NEVER-ISSUED')->assertStatus(404);
 });
 
 it('says a shop cannot take payments rather than showing a button that cannot work', function () {
