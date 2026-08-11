@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schemas.liberu.dev/module/v1.json",
+    "name": "ecommerce-payment-operations-livewire",
+    "display_name": "Payment Operations Livewire",
+    "description": "Livewire 4 storefront surface for the three payment things a shopper legitimately touches: paying, seeing what happened to their own payment, and removing a saved instrument.",
+    "version": "0.1.0",
+    "category": "presentation",
+    "provider": "Liberu\\Ecommerce\\PaymentOperations\\Livewire\\PaymentOperationsLivewireServiceProvider",
+    "requires": {
+        "php": "^8.5",
+        "laravel": "^13.0",
+        "packages": {
+            "liberusoftware/ecommerce-payment-operations": "^0.1"
+        }
+    },
+    "capabilities": [
+        "ecommerce.payment-operations.livewire"
+    ],
+    "default_enabled": false,
+    "features": [
+        "A pay control that authorizes, and captures when the deployment says so",
+        "One idempotency key, minted when the payment step is entered and held for every retry",
+        "A double-clicked pay button that authorizes once and charges once",
+        "An in-flight first attempt answered as still processing, never as an error",
+        "A permanent conflict that refuses rather than quietly starting a second payment",
+        "A decline recorded as a fact, with a short code and a fresh key for the next attempt",
+        "Amounts resolved server-side from a host reference, never sent by a browser",
+        "No instrument anywhere: no property, no field, and a refusal if one arrives as a token",
+        "Provider-neutral: no SDK, no provider name in src, and the host owns the widget",
+        "A receipt folded from the append-only ledger, scoped to the customer who paid",
+        "Saved instruments a customer can list and remove, and can never add",
+        "Every public property locked, enforced by reflection over every registered component",
+        "Integer minor units throughout, formatted by string arithmetic",
+        "A live region announcing every outcome, error and state change"
+    ]
+}
