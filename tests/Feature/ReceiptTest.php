@@ -6,6 +6,7 @@ use Liberu\Ecommerce\PaymentOperations\Data\Money;
 use Liberu\Ecommerce\PaymentOperations\Data\MovementInput;
 use Liberu\Ecommerce\PaymentOperations\Enums\EntryKind;
 use Liberu\Ecommerce\PaymentOperations\Livewire\Components\PaymentReceipt;
+use Liberu\Ecommerce\PaymentOperations\Livewire\Tests\Fixtures\ViewerWithAUlid;
 use Liberu\Ecommerce\PaymentOperations\Models\Payment;
 use Liberu\Ecommerce\PaymentOperations\Models\PaymentEntry;
 use Livewire\Features\SupportTesting\Testable;
